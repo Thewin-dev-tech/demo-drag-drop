@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 const Test = () : JSX.Element =>{
 
-  const sizeExample : number = 5; 
+  const sizeExample : number = 7; 
   const prototypeObjects : Array<Element> | Array<any>
         = Array
           .apply(null, Array(sizeExample))
