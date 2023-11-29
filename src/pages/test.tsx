@@ -5,7 +5,7 @@ import Image from 'next/image'
 const Test = () : JSX.Element =>{
 
   const sizeExample : number = 5; 
-  const prototypeObjects : Array<Element> | any
+  const prototypeObjects : Array<Element> | Array<any>
         = Array
           .apply(null, Array(sizeExample))
           .map((n,i)=>{
@@ -47,8 +47,9 @@ const Test = () : JSX.Element =>{
   )
 };
 
-const allowDrop = (event:any) => {
+async function allowDrop(event:any) : Promise<void> {
   event.preventDefault();
+  console.log('test');
 };
 
 function drag(event:any) : void{
@@ -58,12 +59,26 @@ function drag(event:any) : void{
 function drop(event:any) : void{
   event.preventDefault();
   let id : string = event.dataTransfer.getData('text/plain');
-  const dropTarget : HTMLDivElement = event.target;
+  const editorField : HTMLDivElement = event.target;
 
-  if (dropTarget.classList.contains(styles.editor)) {
-    console.log("------>"+id);
-    dropTarget.appendChild(document.querySelector(`#${id}`)?.cloneNode(true) as HTMLDivElement);
+  if (editorField.classList.contains(styles.editor)) {
+    editorField.appendChild(makeNewItemById(id) as HTMLDivElement);
+  }else{
+    const dropPointElement :  Element | null = document.elementFromPoint(event.clientX , event.clientY);
+    console.log(`DROP POINT : `,dropPointElement);
+    dropPointElement?.before(makeNewItemById(id) as HTMLDivElement);
   }
-};
+}
+
+function makeNewItemById(id : string) : HTMLDivElement | null{
+  let newItem : HTMLDivElement | null = document.querySelector(`#${id}`)?.cloneNode(true) as HTMLDivElement;
+  newItem.draggable = true;
+  newItem.ondragstart = dragOut;
+  return newItem;
+}
+
+function dragOut(event : any) : void {
+  event.target.remove();
+}
 
 export default Test;
