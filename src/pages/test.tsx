@@ -15,7 +15,6 @@ const Test = () : JSX.Element =>{
             </div>
             )
           });
-
   return(
     <div>
       <div className={styles.editor} style={{backgroundColor : "#E4C482"}} id="editor" onDrop={drop}  onDragOver={allowDrop}>
